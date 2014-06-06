@@ -27,22 +27,25 @@ def search(request):
 def api_creation(url):
 	b=str(url.GET['place'])
 	if b in cache:
-		return HttpResponse(json.dumps(cache.get(b)),content_type="application/json")
+		return HttpResponse(json.dumps(cache.get(b),indent=3),content_type="application/json")
 	else:
-		s="MATCH (n:People)-[r:VISITS]->(m:Places) WHERE m.name='"+b+"' RETURN n,r"
+		s="MATCH (n:People)-[r:VISITS]->(m:Places) WHERE m.name='"+b+"' RETURN n,r,m"
 		t=cypher.execute(g,s)[0]
 		if len(t)==0:
 			d={'status':'error handling the object'}
-			return HttpResponse(json.dumps(d),content_type="application/json")
+			return HttpResponse(json.dumps(d,indent=3),content_type="application/json")
 		else:
 			d={}
 			for i in range(len(t)):
 				d['user'+str(i)]={}
 				d['user'+str(i)]['name']=str(t[i][0]['name'])
 				d['user'+str(i)]['details']=str(t[i][1]['details'])
+				d['user'+str(i)]['place']=str(t[i][2]['name'])
+				d['user'+str(i)]['lat']=str(t[i][2]['lat'])
+				d['user'+str(i)]['long']=str(t[i][2]['long'])
 			d['status']='ok'
-			cache.set(b,str(d))
-			return HttpResponse(json.dumps(cache.get(b)),content_type="application/json")
+			cache.set(b,d)
+			return HttpResponse(json.dumps(cache.get(b),indent=3),content_type="application/json")
 def updateCache(url):
 		cache.clear()
 		b=str(url.GET['u'])
@@ -59,6 +62,6 @@ def updateCache(url):
 				d['user'+str(i)]['details']=str(t[i][1]['details'])
 			d['status']='ok'
 			cache.set(b,str(d))
+			
 		return HttpResponse(json.loads(cache.get(b)))
-
 
