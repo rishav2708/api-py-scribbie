@@ -20,6 +20,13 @@ Need to assign oauth and session private keys in order to only view the friend
 Some key features of the api:
 
 1) Easy Parser of neo4j cypher to query and the RESTful Api
+
+
 2) Converts objects to simple dictionaries and then json
+
+
 3) Works on virtual memory concept
+
+
+
 4) Provided with a one level database caching
