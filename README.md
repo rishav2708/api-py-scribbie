@@ -30,3 +30,8 @@ Some key features of the api:
 
 
 4) Provided with a one level database caching
+
+You need to install neo4j graph database and mysql for this to proceed
+and also you need to install py2neo source for implementing the graph database in dictionary and json format.
+
+It's free and very complexity efficient! :)
